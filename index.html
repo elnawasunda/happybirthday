@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Happy Birthday for You!</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #ffebee;
+      font-family: 'Comic Sans MS', cursive;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    
+    /* Background Love Particles */
+    .love-particle {
+      position: absolute;
+      color: #ff6b6b;
+      font-size: 20px;
+      animation: fall linear infinite;
+      user-select: none;
+    }
+    
+    @keyframes fall {
+      to { transform: translateY(100vh); }
+    }
+    
+    /* Countdown */
+    .countdown {
+      position: absolute;
+      font-size: 100px;
+      color: #ff4081;
+      text-shadow: 0 0 10px rgba(255, 64, 129, 0.7);
+      opacity: 0;
+      animation: zoomIn 0.5s forwards;
+    }
+    
+    @keyframes zoomIn {
+      from { transform: scale(0); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    
+    /* Birthday Card */
+    .birthday-card {
+      text-align: center;
+      opacity: 0;
+      transform: scale(0.5);
+      animation: showCard 1s 3.5s forwards;
+    }
+    
+    @keyframes showCard {
+      to { opacity: 1; transform: scale(1); }
+    }
+    
+    h1 {
+      color: #ff4081;
+      font-size: 50px;
+      margin-bottom: 20px;
+    }
+    
+    .flowers {
+      font-size: 80px;
+      margin: 20px 0;
+      animation: float 2s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+    
+    .message {
+      font-size: 24px;
+      color: #555;
+    }
+  </style>
+</head>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+<script>
+  function shootConfetti() {
+    confetti({
+      particleCount: 150,
+      spread: 70,
+      origin: { y: 0.6 }
+    });
+  }
+  setTimeout(shootConfetti, 4000); // Jalankan setelah countdown
+</script>
+<body>
+  <!-- Love Particles Background -->
+  <div id="particles"></div>
+  
+  <!-- Countdown -->
+  <div id="countdown"></div>
+  
+  <!-- Birthday Card -->
+  <div class="birthday-card">
+    <h1>Happy Birthday!</h1>
+    <div class="flowers">🌷🌷🌷</div>
+    <p class="message">For the most special person in my life 💖</p>
+  </div>
+
+  <script>
+    // 1. Create Love Particles
+    function createParticles() {
+      const particles = document.getElementById('particles');
+      const loveSymbols = ['❤️', '💖', '💗', '💓'];
+      
+      for (let i = 0; i < 50; i++) {
+        const love = document.createElement('div');
+        love.className = 'love-particle';
+        love.textContent = loveSymbols[Math.floor(Math.random() * loveSymbols.length)];
+        love.style.left = Math.random() * 100 + 'vw';
+        love.style.animationDuration = (Math.random() * 3 + 2) + 's';
+        love.style.animationDelay = Math.random() * 5 + 's';
+        particles.appendChild(love);
+      }
+    }
+    
+    // 2. Countdown Animation
+    function startCountdown() {
+      const countdown = document.getElementById('countdown');
+      let number = 3;
+      
+      const timer = setInterval(() => {
+        countdown.textContent = number;
+        countdown.style.animation = 'none';
+        void countdown.offsetWidth; // Trigger reflow
+        countdown.style.animation = 'zoomIn 0.5s forwards';
+        
+        if (number === 0) {
+          clearInterval(timer);
+          countdown.style.display = 'none';
+        }
+        number--;
+      }, 1000);
+    }
+    
+    // 3. Add Music (Optional)
+    function playMusic() {
+      const audio = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3');
+      audio.loop = true;
+      audio.volume = 0.3;
+      setTimeout(() => audio.play(), 3500); // Play after countdown
+    }
+    
+    // Run all animations
+    window.onload = function() {
+      createParticles();
+      startCountdown();
+      playMusic(); // Comment this line if you don't want music
+    };
+  </script>
+</body>
+</html>
